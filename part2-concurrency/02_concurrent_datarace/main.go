@@ -23,7 +23,7 @@ func main() {
 	startTime := time.Now()
 
 	// create a waitgroup
-var toysDone sync.WaitGroup
+	var toysDone sync.WaitGroup
 
 	// loop over the colors
 	for i, color := range colors {
