@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"crypto/sha256"
 	"fmt"
 )
 
@@ -35,14 +34,3 @@ func PrintInColor(message string, colorName string) {
 	fmt.Printf("%s %s %s\n", colorCode, message, Reset)
 }
 
-func DoWork(message string, colorName string, cpuCycles int) {
-
-	PrintInColor(message, colorName)
-
-	if cpuCycles > 0 {
-		hash := sha256.Sum256([]byte(message))
-		for i := 0; i < cpuCycles; i++ {
-			hash = sha256.Sum256(hash[:])
-		}
-	}
-}
