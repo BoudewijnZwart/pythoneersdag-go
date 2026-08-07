@@ -6,11 +6,10 @@ import (
 	"time"
 )
 
-
 func main() {
 	// create a slice of colors
 	colors := []string{"blue", "yellow", "green"}
-	
+
 	// create the toy shelf
 	var shelf []utils.Toy
 
@@ -31,4 +30,3 @@ func createToy(id int, color string, shelf *[]utils.Toy) {
 	utils.DryPaint(&toy)
 	*shelf = append(*shelf, toy)
 }
-

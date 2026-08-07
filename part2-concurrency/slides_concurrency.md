@@ -265,3 +265,37 @@ func createToy(id int, color string, shelf *[]utils.Toy, wg *sync.WaitGroup) {
 }
 
 ```
+---
+
+# New problem
+
+
+<style scoped>
+img { display: block; margin: 0 auto; }
+</style>
+
+![h:700](images/Race_conditions.png)
+
+---
+
+# Mutex
+
+<style scoped>
+img { display: block; margin: 0 auto; }
+</style>
+
+![h:500](images/fence.png)
+
+---
+
+# Mutex
+
+```go
+var mu sync.Mutex
+
+func someFunction(mu *sync.Mutex){
+    mu.Lock()
+    *shelf = append(*shelf, toy)
+    mu.Unlock()
+}
+```

@@ -18,13 +18,13 @@ func main() {
 
 	// create a waitgroup
 	var toysDone sync.WaitGroup
-	var mu sync.Mutex
 
 	// loop over the colors
 	for i, color := range colors {
 		toysDone.Add(1)
-		go createToy(i+1, color, &shelf, &toysDone, &mu)
+		go createToy(i+1, color, &shelf, &toysDone)
 	}
+
 
 	// wait for all the toys to be made
 	toysDone.Wait()
@@ -32,12 +32,10 @@ func main() {
 	fmt.Printf("Final shelf inventory: %+v\n", shelf)
 }
 
-func createToy(id int, color string, shelf *[]utils.Toy, wg *sync.WaitGroup, mu *sync.Mutex) {
+func createToy(id int, color string, shelf *[]utils.Toy, wg *sync.WaitGroup) {
 	defer wg.Done() // lower the waitgroup counter by one
 	toy := utils.FetchToyFromStorage(id)
 	utils.PaintToy(&toy, color)
 	utils.DryPaint(&toy)
-	mu.Lock()
 	*shelf = append(*shelf, toy)
-	mu.Unlock()
 }
