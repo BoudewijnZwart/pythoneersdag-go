@@ -7,26 +7,26 @@ import (
 )
 
 func main() {
-	// create a slice of colors
-	colors := []string{"blue", "yellow", "green"}
+	// maak een slice met kleuren
+	kleuren := []string{"blauw", "geel", "groen"}
 
-	// create the toy shelf
-	var shelf []utils.Toy
+	// maak een plank om speelgoed op te slaan
+	var plank []utils.Speelgoed
 
-	startTime := time.Now()
+	startTijd := time.Now()
 
-	// loop over the colors
-	for i, color := range colors {
-		createToy(i+1, color, &shelf)
+	// maak een stuk speelgoed in elke kleur
+	for i, kleur := range kleuren {
+		maakSpeelgoed(i+1, kleur, &plank)
 	}
 
-	fmt.Printf("All done! Total time taken: %v\n", time.Since(startTime))
-	fmt.Printf("Final shelf inventory: %+v\n", shelf)
+	fmt.Printf("Klaar! Tijd verstreken: %v\n", time.Since(startTijd))
+	fmt.Printf("Plank: %+v\n", plank)
 }
 
-func createToy(id int, color string, shelf *[]utils.Toy) {
-	toy := utils.FetchToyFromStorage(id)
-	utils.PaintToy(&toy, color)
-	utils.DryPaint(&toy)
-	*shelf = append(*shelf, toy)
+func maakSpeelgoed(id int, kleur string, plank *[]utils.Speelgoed) {
+	speelgoed := utils.HaalSpeelgoedUitOpslag(id)
+	utils.SchilderSpeelgoed(&speelgoed, kleur)
+	utils.DroogVerf(&speelgoed)
+	*plank = append(*plank, speelgoed)
 }

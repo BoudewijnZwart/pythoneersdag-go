@@ -1,5 +1,6 @@
 [tools]
 node="26"
+"npm:@marp-team/marp-cli" = "latest"
 
 [tasks]
 marp_serve="PORT=5000 marp --server --watch --theme ./rosepine.css ."

@@ -8,30 +8,29 @@ import (
 )
 
 func main() {
-	// set the number of "pete's"  to 1 (no parallelism)
+	// huur maar 1 piet in (geen parallelisme)
 	runtime.GOMAXPROCS(1)
 
-	// create a slice of colors
-	colors := []string{"blue", "yellow", "green"}
+	// maak een slice met kleuren
+	kleuren := []string{"blauw", "geel", "groen"}
 
-	// create the toy shelf
-	var shelf []utils.Toy
+	// maak een plank voor de opslag
+	var plank []utils.Speelgoed
 
 	startTime := time.Now()
 
-	// loop over the colors
-	for i, color := range colors {
-		createToy(i+1, color, &shelf)
+	// maak een stuk speelgoed in elke kleur
+	for i, color := range kleuren {
+		maakSpeelgoed(i+1, color, &plank)
 	}
 
-	// wait for all the toys to be made
-	fmt.Printf("All done! Total time taken: %v\n", time.Since(startTime))
-	fmt.Printf("Final shelf inventory: %+v\n", shelf)
+	fmt.Printf("Klaar, tijd vertreken: %v\n", time.Since(startTime))
+	fmt.Printf("Plank: %+v\n", plank)
 }
 
-func createToy(id int, color string, shelf *[]utils.Toy) {
-	toy := utils.FetchToyFromStorage(id)
-	utils.PaintToy(&toy, color)
-	utils.DryPaint(&toy)
-	*shelf = append(*shelf, toy)
+func maakSpeelgoed(id int, kleur string, plank *[]utils.Speelgoed) {
+	speelgoed := utils.HaalSpeelgoedUitOpslag(id)
+	utils.SchilderSpeelgoed(&speelgoed, kleur)
+	utils.DroogVerf(&speelgoed)
+	*plank = append(*plank, speelgoed)
 }

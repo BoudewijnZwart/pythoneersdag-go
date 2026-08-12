@@ -8,34 +8,35 @@ import (
 )
 
 func main() {
-	// maak een slice met kleuren
+	// maak een slice met verschillende kleuren
 	kleuren := []string{"blauw", "geel", "groen"}
 
-	// maak een plank
+	// maak een plank voor het speelgoed
 	var plank []utils.Speelgoed
 
 	startTijd := time.Now()
 
 	// maak een wait group
 	var speelgoedKlaar sync.WaitGroup
+	var mu sync.Mutex
 
-	// maak speelgoed in meerdere kleuren
-	for i, kleur := range kleuren {
+	for i, kleuren := range kleuren {
 		speelgoedKlaar.Add(1)
-		go maakSpeelgoed(i+1, kleur, &plank, &speelgoedKlaar)
+		go maakSpeelgoed(i+1, kleuren, &plank, &speelgoedKlaar, &mu)
 	}
 
-
-	// wacht to al the speelgoed klaar is
+	// wait for all the toys to be made
 	speelgoedKlaar.Wait()
 	fmt.Printf("Klaar, tijd verstreken: %v\n", time.Since(startTijd))
 	fmt.Printf("Plank: %+v\n", plank)
 }
 
-func maakSpeelgoed(id int, kleur string, plank *[]utils.Speelgoed, wg *sync.WaitGroup) {
+func maakSpeelgoed(id int, kleuren string, plank *[]utils.Speelgoed, wg *sync.WaitGroup, mu *sync.Mutex) {
 	defer wg.Done() // lower the waitgroup counter by one
 	speelgoed := utils.HaalSpeelgoedUitOpslag(id)
-	utils.SchilderSpeelgoed(&speelgoed, kleur)
+	utils.SchilderSpeelgoed(&speelgoed, kleuren)
 	utils.DroogVerf(&speelgoed)
+	mu.Lock()
 	*plank = append(*plank, speelgoed)
+	mu.Unlock()
 }

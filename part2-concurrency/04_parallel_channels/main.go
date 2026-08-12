@@ -8,33 +8,32 @@ import (
 )
 
 func main() {
-	// create a slice of colors
-	colors := []string{"blue", "yellow", "green"}
+	// maak een slice met kleuren
+	kleuren := []string{"blauw", "geel", "groen"}
 
-	// create the toy shelf
-	var shelf []utils.Toy
+	// maak een plank
+	var plank []utils.Speelgoed	
 
-	startTime := time.Now()
+	startTijd := time.Now()
 
-	// create a waitgroup
-	var toysDone sync.WaitGroup
+	// maak een wait group
+	var speelgoedKlaar sync.WaitGroup
 
-	// loop over the colors
-	for i, color := range colors {
-		toysDone.Add(1)
-		go createToy(i+1, color, &shelf, &toysDone)
+	for i, kleur := range kleuren {
+		speelgoedKlaar.Add(1)
+		go maakSpeelgoed(i+1, kleur, &plank, &speelgoedKlaar)
 	}
 
-	// wait for all the toys to be made
-	toysDone.Wait()
-	fmt.Printf("All done! Total time taken: %v\n", time.Since(startTime))
-	fmt.Printf("Final shelf inventory: %+v\n", shelf)
+	// wacht tot al het speelgoed klaar is
+	speelgoedKlaar.Wait()
+	fmt.Printf("All done! Total time taken: %v\n", time.Since(startTijd))
+	fmt.Printf("Final shelf inventory: %+v\n", plank)
 }
 
-func createToy(id int, color string, shelf *[]utils.Toy, wg *sync.WaitGroup) {
-	defer wg.Done() // lower the waitgroup counter by one
-	toy := utils.FetchToyFromStorage(id)
-	utils.PaintToy(&toy, color)
-	utils.DryPaint(&toy)
-	*shelf = append(*shelf, toy)
+func maakSpeelgoed(id int, kleur string, plank *[]utils.Speelgoed, wg *sync.WaitGroup) {
+	defer wg.Done() // verlaag de teller van de wait group met 1
+	speelgoed := utils.HaalSpeelgoedUitOpslag(id)
+	utils.SchilderSpeelgoed(&speelgoed, kleur)
+	utils.DroogVerf(&speelgoed)
+	*plank = append(*plank, speelgoed)
 }
