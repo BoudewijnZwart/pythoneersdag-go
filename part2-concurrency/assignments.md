@@ -20,7 +20,7 @@ Open the file 02/concurrent/main.go. For this assignment we will not use paralle
 runtime.GOMAXPROCS(1)
 ```
 
-set the amount of OS threads that will do work to one, disabeling paralellism for now. Try to make the creation of toys run concurrently. Use goroutines and wait groups.
+set the amount of OS threads that will do work to one, disabeling paralellism for now. Try to make the creation of toys run concurrently. Use goroutines and wait groups. Only edit the file 02_concurrent_antwoorden/main.go.
 
 
 ## Assignment 3 - Parrallelism with Mutex
@@ -36,12 +36,14 @@ Go has a tool to detect data races. With the following command you can see the p
 
 Where is the data race happening?
 
-Try to solve this problem by using a Mutex. See https://go.dev/tour/concurrency/9 for more information on Mutexes in Go.
+Try to solve this problem by using a Mutex. See https://go.dev/tour/concurrency/9 for more information on Mutexes in Go. Only edit the file 03_parallel_mutex/main.go.
 
 ## Assignment 4 - Parallelism with Channels
 
 A more common way of solving memory access isues in Go is by using channels. Channels transport data between goroutines. The goroutine must specify if it reads from or rights to a channel. Channels are designed in a way that makes sure that even if two goroutines are trying to write to them or read from them at the exact same time, a ordering is still enforced.
 
 See https://go.dev/tour/concurrency/2 for more information on channels.
+
+Try to solve the same problem as in assignment 3, but now using channels. Only edit the file 04_parallel_channels/main.go.
 
 
