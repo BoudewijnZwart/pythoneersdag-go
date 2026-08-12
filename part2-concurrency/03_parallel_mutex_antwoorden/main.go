@@ -25,14 +25,14 @@ func main() {
 		go maakSpeelgoed(i+1, kleuren, &plank, &speelgoedKlaar, &mu)
 	}
 
-	// wait for all the toys to be made
+	// wacht tot al het speelgoed klaar is
 	speelgoedKlaar.Wait()
 	fmt.Printf("Klaar, tijd verstreken: %v\n", time.Since(startTijd))
 	fmt.Printf("Plank: %+v\n", plank)
 }
 
 func maakSpeelgoed(id int, kleuren string, plank *[]utils.Speelgoed, wg *sync.WaitGroup, mu *sync.Mutex) {
-	defer wg.Done() // lower the waitgroup counter by one
+	defer wg.Done() // verlaag de wait group teller met 1
 	speelgoed := utils.HaalSpeelgoedUitOpslag(id)
 	utils.SchilderSpeelgoed(&speelgoed, kleuren)
 	utils.DroogVerf(&speelgoed)
