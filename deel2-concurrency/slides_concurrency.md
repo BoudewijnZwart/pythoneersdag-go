@@ -299,3 +299,68 @@ func someFunction(mu *sync.Mutex){
     mu.Unlock()
 }
 ```
+
+---
+
+# Channels
+
+
+<style scoped>
+img { display: block; margin: 0 auto; }
+</style>
+
+![h:500](images/channels.png)
+
+---
+
+# Syntax
+
+```go
+// Creating a channel (unbuffered)
+ch := make(chan string)
+
+// Sending data (like placing an order through the service window)
+ch <- "Steak, medium rare"
+
+// Receiving data (like picking up an order from the service window)
+message := <-ch
+```
+
+---
+
+# Unbuffered channels
+
+* Unbuffered channels will block a goroutine trying to write to it if it already contains data.
+* Can be used for synchronization and real-time transfer
+
+---
+
+# Buffered channels
+
+* Buffered channels work like a queue
+* Will only block writers if it is full
+* Provide some flexibility
+* Enable asynchronous transfer
+
+---
+
+# Syntax
+
+```go
+ch := make(chan int, 2)
+ch <- 1
+ch <- 2
+fmt.Println(<-ch)
+fmt.Println(<-ch)
+```
+
+---
+
+# Some patterns
+
+
+<style scoped>
+img { display: block; margin: 0 auto; }
+</style>
+
+![h:500](images/fan-pattern.png)
