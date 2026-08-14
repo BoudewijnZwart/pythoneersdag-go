@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"database/sql"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -8,8 +9,6 @@ import (
 
 	"sinterklaas-api/models"
 	"sinterklaas-api/repository"
-
-	"gorm.io/gorm"
 )
 
 // KindHandler bevat de HTTP-handlers voor het Kind-endpoint. Hij praat alleen
@@ -66,7 +65,7 @@ func (h *KindHandler) GetByNaam(w http.ResponseWriter, r *http.Request) {
 
 	kind, err := h.kindRepo.FindByNaam(naam)
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
+		if errors.Is(err, sql.ErrNoRows) {
 			http.Error(w, "kind niet gevonden", http.StatusNotFound)
 			return
 		}

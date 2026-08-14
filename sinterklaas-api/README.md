@@ -4,8 +4,6 @@ Met het toenemende aantal mensen op de wereld is het grote boek van Sinterklaas 
 een handige manier om bij te houden wie er cadeautjes moeten krijgen op 5 december. Daarom
 hebben de Pieten het een API gemaakt met Go.
 
-De API is gemaakt met de standard library en een veelgebruikte ORM (extern pakket). De ORM heet Gorm.
-
 ## De API starten
 
 ```bash
@@ -59,7 +57,7 @@ curl http://localhost:8081/kinderen
 ```
 main.go                 opzetten van db, repositories, handlers en routes
 models/                 Kind en Cadeau structs
-repository/             interfaces + GORM-implementaties voor databasetoegang
+repository/             interfaces + repositories
 handlers/               HTTP-handlers die met de repository-interfaces praten
 db/                     opzetten van de databaseverbinding en migraties
 ```
