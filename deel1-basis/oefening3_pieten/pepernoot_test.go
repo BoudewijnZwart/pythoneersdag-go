@@ -1,4 +1,4 @@
-package oefening4
+package oefening3
 
 import "testing"
 
