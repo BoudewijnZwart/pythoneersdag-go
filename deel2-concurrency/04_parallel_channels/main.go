@@ -8,32 +8,45 @@ import (
 )
 
 func main() {
-	// maak een slice met kleuren
+	var plank []utils.Speelgoed
+	var speelgoedKlaar sync.WaitGroup
+	var consumentKlaar sync.WaitGroup
+	channel := make(chan utils.Speelgoed)
 	kleuren := []string{"blauw", "geel", "groen"}
-
-	// maak een plank
-	var plank []utils.Speelgoed	
 
 	startTijd := time.Now()
 
-	// maak een wait group
-	var speelgoedKlaar sync.WaitGroup
+	consumentKlaar.Add(1)
+	go verplaatsVanChannelNaarPlank(&plank, channel, &consumentKlaar)
 
 	for i, kleur := range kleuren {
 		speelgoedKlaar.Add(1)
-		go maakSpeelgoed(i+1, kleur, &plank, &speelgoedKlaar)
+		go maakSpeelgoed(i+1, kleur, &speelgoedKlaar, channel)
 	}
 
-	// wacht tot al het speelgoed klaar is
+	// wacht op de producenten
 	speelgoedKlaar.Wait()
-	fmt.Printf("All done! Total time taken: %v\n", time.Since(startTijd))
-	fmt.Printf("Final shelf inventory: %+v\n", plank)
+	close(channel)
+
+	// wacht op de consument
+	consumentKlaar.Wait()
+
+	fmt.Printf("Klaar, tijd verstreken: %v\n", time.Since(startTijd))
+	fmt.Printf("Plank: %+v\n", plank)
 }
 
-func maakSpeelgoed(id int, kleur string, plank *[]utils.Speelgoed, wg *sync.WaitGroup) {
-	defer wg.Done() // verlaag de teller van de wait group met 1
+func maakSpeelgoed(id int, kleur string, wg *sync.WaitGroup, uit chan<- utils.Speelgoed) {
+	defer wg.Done() // Lower the waitgroup counter by one
+
 	speelgoed := utils.HaalSpeelgoedUitOpslag(id)
 	utils.SchilderSpeelgoed(&speelgoed, kleur)
 	utils.DroogVerf(&speelgoed)
-	*plank = append(*plank, speelgoed)
+	uit <- speelgoed
+}
+
+func verplaatsVanChannelNaarPlank(plank *[]utils.Speelgoed, input <-chan utils.Speelgoed, klaar *sync.WaitGroup){
+	defer klaar.Done()
+	for speelgoed := range input {
+		*plank = append(*plank, speelgoed)
+	}
 }

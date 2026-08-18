@@ -4,31 +4,39 @@ import (
 	"assignment2/shared/utils"
 	"fmt"
 	"runtime"
+	"sync"
 	"time"
 )
 
 func main() {
-	// huur maar 1 piet in (geen parallelisme)
+	// huur maar 1 piet in
 	runtime.GOMAXPROCS(1)
 
 	// maak een slice met kleuren
 	kleuren := []string{"blauw", "geel", "groen"}
 
-	// maak een plank voor de opslag
+	// maak een plank aan
 	var plank []utils.Speelgoed
 
-	startTime := time.Now()
+	startTijd := time.Now()
+
+	// maak een wait group
+	var speelgoedKlaar sync.WaitGroup
 
 	// maak een stuk speelgoed in elke kleur
-	for i, color := range kleuren {
-		maakSpeelgoed(i+1, color, &plank)
+	for i, kleur := range kleuren {
+		speelgoedKlaar.Add(1)
+		go maakSpeelgoed(i+1, kleur, &plank, &speelgoedKlaar)
 	}
 
-	fmt.Printf("Klaar, tijd vertreken: %v\n", time.Since(startTime))
-	fmt.Printf("Plank: %+v\n", plank)
+	// wacht tot al het speelgoed klaar is
+	speelgoedKlaar.Wait()
+	fmt.Printf("All done! Total time taken: %v\n", time.Since(startTijd))
+	fmt.Printf("Final shelf inventory: %+v\n", plank)
 }
 
-func maakSpeelgoed(id int, kleur string, plank *[]utils.Speelgoed) {
+func maakSpeelgoed(id int, kleur string, plank *[]utils.Speelgoed, wg *sync.WaitGroup) {
+	defer wg.Done() // Verlaag de  wait group teller met 1
 	speelgoed := utils.HaalSpeelgoedUitOpslag(id)
 	utils.SchilderSpeelgoed(&speelgoed, kleur)
 	utils.DroogVerf(&speelgoed)
