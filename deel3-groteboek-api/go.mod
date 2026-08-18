@@ -1,4 +1,4 @@
-module sinterklaas-api
+module groteboek-api
 
 go 1.26.3
 
