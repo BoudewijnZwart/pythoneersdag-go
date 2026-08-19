@@ -9,17 +9,24 @@ import (
 
 var ErrCadeauNietGevonden = errors.New("cadeau niet gevonden")
 
-type CadeauRepository struct {
+// CadeauRepository beschrijft de opslag en opvraging van cadeaus.
+type CadeauRepository interface {
+	FindOrCreate(c model.Cadeau) (model.Cadeau, error)
+	FindByNaam(naam string) (model.Cadeau, error)
+	FindAll() ([]model.Cadeau, error)
+}
+
+type SqliteCadeauRepository struct {
 	db *sql.DB
 }
 
-func NewCadeauRepository(db *sql.DB) *CadeauRepository {
-	return &CadeauRepository{db: db}
+func NewCadeauRepository(db *sql.DB) *SqliteCadeauRepository {
+	return &SqliteCadeauRepository{db: db}
 }
 
 // FindOrCreate zoekt een cadeau op naam (uniek) en maakt het aan als het nog
 // niet bestaat, zodat er nooit twee cadeaus met dezelfde naam ontstaan.
-func (r *CadeauRepository) FindOrCreate(c model.Cadeau) (model.Cadeau, error) {
+func (r *SqliteCadeauRepository) FindOrCreate(c model.Cadeau) (model.Cadeau, error) {
 	bestaand, err := r.FindByNaam(c.Naam)
 	if err == nil {
 		return bestaand, nil
@@ -45,7 +52,7 @@ func (r *CadeauRepository) FindOrCreate(c model.Cadeau) (model.Cadeau, error) {
 	return c, nil
 }
 
-func (r *CadeauRepository) FindByNaam(naam string) (model.Cadeau, error) {
+func (r *SqliteCadeauRepository) FindByNaam(naam string) (model.Cadeau, error) {
 	row := r.db.QueryRow(
 		`SELECT id, naam, prijs, omschrijving FROM cadeaus WHERE naam = ?`, naam,
 	)
@@ -61,7 +68,7 @@ func (r *CadeauRepository) FindByNaam(naam string) (model.Cadeau, error) {
 	return c, nil
 }
 
-func (r *CadeauRepository) FindAll() ([]model.Cadeau, error) {
+func (r *SqliteCadeauRepository) FindAll() ([]model.Cadeau, error) {
 	rows, err := r.db.Query(`SELECT id, naam, prijs, omschrijving FROM cadeaus ORDER BY naam`)
 	if err != nil {
 		return nil, err

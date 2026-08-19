@@ -12,10 +12,10 @@ import (
 )
 
 type KindHandler struct {
-	kinderen *repository.KindRepository
+	kinderen repository.KindRepository
 }
 
-func NewKindHandler(kinderen *repository.KindRepository) *KindHandler {
+func NewKindHandler(kinderen repository.KindRepository) *KindHandler {
 	return &KindHandler{kinderen: kinderen}
 }
 

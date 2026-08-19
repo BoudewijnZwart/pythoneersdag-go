@@ -13,18 +13,25 @@ var (
 	ErrKindBestaatAl    = errors.New("kind staat al in het grote boek")
 )
 
-type KindRepository struct {
-	db      *sql.DB
-	cadeaus *CadeauRepository
+// KindRepository beschrijft de opslag en opvraging van kinderen in het grote boek.
+type KindRepository interface {
+	Create(naam string, wens model.Cadeau) (model.Kind, error)
+	FindByNaam(naam string) (model.Kind, error)
+	FindAll() ([]model.Kind, error)
 }
 
-func NewKindRepository(db *sql.DB, cadeaus *CadeauRepository) *KindRepository {
-	return &KindRepository{db: db, cadeaus: cadeaus}
+type SqliteKindRepository struct {
+	db      *sql.DB
+	cadeaus CadeauRepository
+}
+
+func NewKindRepository(db *sql.DB, cadeaus CadeauRepository) *SqliteKindRepository {
+	return &SqliteKindRepository{db: db, cadeaus: cadeaus}
 }
 
 // Create zoekt de gewenste wens op (of maakt hem aan) en schrijft het kind
 // met die wens in het grote boek.
-func (r *KindRepository) Create(naam string, wens model.Cadeau) (model.Kind, error) {
+func (r *SqliteKindRepository) Create(naam string, wens model.Cadeau) (model.Kind, error) {
 	cadeau, err := r.cadeaus.FindOrCreate(wens)
 	if err != nil {
 		return model.Kind{}, err
@@ -46,7 +53,7 @@ func (r *KindRepository) Create(naam string, wens model.Cadeau) (model.Kind, err
 	return model.Kind{ID: id, Naam: naam, Wens: cadeau}, nil
 }
 
-func (r *KindRepository) FindByNaam(naam string) (model.Kind, error) {
+func (r *SqliteKindRepository) FindByNaam(naam string) (model.Kind, error) {
 	row := r.db.QueryRow(`
 		SELECT k.id, k.naam, c.id, c.naam, c.prijs, c.omschrijving
 		FROM kinderen k
@@ -64,7 +71,7 @@ func (r *KindRepository) FindByNaam(naam string) (model.Kind, error) {
 	return k, nil
 }
 
-func (r *KindRepository) FindAll() ([]model.Kind, error) {
+func (r *SqliteKindRepository) FindAll() ([]model.Kind, error) {
 	rows, err := r.db.Query(`
 		SELECT k.id, k.naam, c.id, c.naam, c.prijs, c.omschrijving
 		FROM kinderen k
