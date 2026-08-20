@@ -590,16 +590,6 @@ if err != nil {
 }
 ```
 
-<!--
-De grootste filosofische omschakeling van vandaag. Go heeft geen
-exceptions, geen try/except. Een functie die kan falen geeft een extra
-error-waarde terug als laatste return value, en jij bent verantwoordelijk
-om die te checken. Doe je dat niet, dan verdwijnt de fout stilletjes in
-het niets - geen vangnet zoals een onafgehandelde exception die met een
-duidelijke stack trace crasht. Onderwerp van een van de oefeningen
-vanmiddag.
--->
-
 ---
 
 ## Tooling: alles zit er al in
@@ -611,8 +601,8 @@ go fmt ./...            # formatteer je code
 go vet ./...              # zoek veelgemaakte foutpatronen
 ```
 
-Geen Black, geen Flake8, geen losse testrunner nodig - zit standaard in de
-go-CLI, en iedereen gebruikt dezelfde tools.
+Geen Black, geen Flake8, geen losse testrunner nodig. 
+Iedereen gebruikt dezelfde tools.
 
 ---
 
