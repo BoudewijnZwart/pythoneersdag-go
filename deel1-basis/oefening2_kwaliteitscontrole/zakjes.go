@@ -11,10 +11,8 @@ type Zakje struct {
 // KeurAlleZakjesGoed loopt door alle zakjes en markeert ze als
 // gecontroleerd.
 //
-// BUG: range geeft bij elke iteratie een kopie van het element terug, niet
-// het originele element in de slice. De aanpassing aan zakje in de loop
-// verdwijnt dus zodra de volgende iteratie begint, de originele zakjes in
-// de slice blijven ongewijzigd.
+// BUG: het lijkt erop dat de staat van Gecontroleerd op de zakjes niet
+// echt worden gewijzigd. Kun je het probleem oplossen?
 func KeurAlleZakjesGoed(zakjes []Zakje) {
 	for _, zakje := range zakjes {
 		zakje.Gecontroleerd = true
