@@ -30,11 +30,10 @@ func (p *Paard) Bezorg(pakket string) string {
 	return fmt.Sprintf("%s wordt door %s over de daken bezorgd (bezorging nr. %d)", pakket, p.Naam, p.AantalBezorgd)
 }
 
-// NieuwPaard maakt een nieuwe Bezorgmethode aan voor het opgegeven paard.
+// NieuwPaard maakt een nieuwe Bezorgmethode aan in de vorm van een paard.
 //
-// BUG: dit compileert niet. Paard{...} is een waarde, geen pointer, en
-// Bezorg heeft een pointer receiver - een waarde van het type Paard zit
-// daarom niet in de method set van de Bezorgmethode interface.
+// BUG: dit compileert niet. Om de een of andere reden voeldoet Paard niet aan de Bezorgmethode interface.
+// Los de bug hier onder op.
 func NieuwPaard(naam string) Bezorgmethode {
 	return Paard{Naam: naam}
 }

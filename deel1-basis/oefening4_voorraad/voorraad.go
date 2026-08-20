@@ -28,11 +28,9 @@ func (v *Voorraad) Haal(n int) error {
 // BezorgCadeau haalt pepernoten uit de voorraad om bij een cadeau te doen,
 // en geeft een bevestigingsbericht terug.
 //
-// BUG: bij het resultaat van voorraad.Haal() wordt de eventuele error gewoon
-// genegeerd. Go heeft geen exceptions, als je een teruggegeven error niet
-// checkt, merkt niemand iets van een mislukte actie. Deze functie doet dus
-// vrolijk alsof het cadeau klaar is, zelfs als er helemaal niet genoeg
-// voorraad was.
+// BUG: volgens de output lijkt het altijd goed te gaan, ook al de voorraad niet
+// minder wordt.
+// los de bug hier onder op
 func BezorgCadeau(voorraad *Voorraad, naam string, aantalPepernoten int) (string, error) {
 	voorraad.Haal(aantalPepernoten)
 	return fmt.Sprintf("cadeau voor %s is klaar!", naam), nil

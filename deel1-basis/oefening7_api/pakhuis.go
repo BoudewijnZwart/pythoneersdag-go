@@ -9,14 +9,23 @@ import (
 	"strconv"
 )
 
+// BestelCadeaus krijgt een cadeaunaam en een aantal en returnt dat als string en mogelijk een error.
+// In deze handler zit een bug, probeer deze op te lossen.
+func BestelCadeaus(naam string, aantalStr string) (string, error) {
+	aantal, _ := strconv.Atoi(aantalStr)
+
+	boodschap := fmt.Sprintf("%d keer '%s' besteld\n", aantal, naam)
+	return boodschap, nil
+}
+
 // NieuwPakhuis zet een kleine HTTP API op met twee endpoints:
 //
 //	GET /cadeaus/{naam}          - een kort welkomstbericht per cadeau
 //	GET /cadeaus/{naam}/{aantal} - hoeveel er besteld zijn
 //
-// BUG: In een van deze handlers zit een zelfde soort mogelijek bug als dat eerder ook
-// langsgekomen is.
+// De bug zit niet hier verscholen, los deze op in BestelCadeaus
 func NieuwPakhuis() http.Handler {
+	// mux kun je zien als een router
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /cadeaus/{naam}", func(w http.ResponseWriter, r *http.Request) {
@@ -27,10 +36,15 @@ func NieuwPakhuis() http.Handler {
 	mux.HandleFunc("GET /cadeaus/{naam}/{aantal}", func(w http.ResponseWriter, r *http.Request) {
 		naam := r.PathValue("naam")
 		aantalStr := r.PathValue("aantal")
+		boodschap, err := BestelCadeaus(naam, aantalStr)
 
-		aantal, _ := strconv.Atoi(aantalStr)
+		if err != nil {
+			http.Error(w, "Ongeldig aantal ingevoerd!", http.StatusBadRequest)
+			return
+		}
 
-		fmt.Fprintf(w, "%d keer '%s' besteld\n", aantal, naam)
+		fmt.Fprint(w, boodschap)
+
 	})
 
 	return mux

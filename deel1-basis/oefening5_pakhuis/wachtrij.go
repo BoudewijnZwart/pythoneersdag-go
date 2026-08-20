@@ -18,7 +18,7 @@ func VerdeelWachtrij(wachtrij []Cadeau) (ploegA, ploegB []Cadeau) {
 	//
 	// Daardoor kan een wijziging aan de ene slice ook gevolgen hebben voor
 	// de andere slice. Let vooral op wat er gebeurt wanneer later een
-	// element wordt toegevoegd aan ploegA.
+	// element wordt toegevoegd aan ploegA. Los de bug in deze functie op.
 	return wachtrij[:helft], wachtrij[helft:]
 }
 
@@ -29,9 +29,9 @@ func VerdeelWachtrij(wachtrij []Cadeau) (ploegA, ploegB []Cadeau) {
 // Toch kan het toevoegen van een cadeau ervoor zorgen dat ploegB onverwacht
 // verandert.
 //
-// TIP: denk na over wat append doet wanneer de slice nog voldoende capaciteit
-// heeft. Heeft ploegA een eigen onderliggende array, of deelt hij die met
-// een andere slice?
+// TIP: denk na over wat append eigenlijk doet.
+// Heeft ploegA een eigen onderliggende array, of deelt hij die met
+// een andere slice? Los de bug in de functie VerdeelWachtrij op.
 func VoegSpoedbestellingToe(ploegA []Cadeau, extra Cadeau) []Cadeau {
 	return append(ploegA, extra)
 }
