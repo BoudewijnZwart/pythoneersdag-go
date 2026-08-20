@@ -255,6 +255,7 @@ print(p.name) # Jan-Hein
 ```
 
 ```go
+// go
 type Person struct {
     name   string
     age string
@@ -615,24 +616,24 @@ go-CLI, en iedereen gebruikt dezelfde tools.
 
 ---
 
-<!-- _class: lead -->
+## Hoe werkt deel 1?
 
-# Klaar om te bug-hunten
-
----
-
-## Hoe werkt de bug hunt?
-
-1. Clone de repo, elke oefening staat in zijn eigen mapje
+1. Clone de repo, ga naar `deel1-basis/` Elke oefening daarin staat in zijn eigen mapje.
 2. Elke oefening heeft tests die nu falen
 3. Los de bug op in de code, niet de tests, tot alles slaagt: `go test ./...`
 4. Oefeningen zijn genummerd op moeilijkheid, van makkelijk naar moeilijker
 
 ```bash
-git clone <repo-url> sinterklaas-workshop
-cd sinterklaas-workshop
-go test ./...
+git clone <repo-url>
+cd 2026-08-21-pythoneersdag-go
+
+cd deel1-basis
+go test ./...  # test alle oefeningen
+# of
+cd oefening...
+go test  # test de go file in de huidige map
 ```
+
 
 ---
 
