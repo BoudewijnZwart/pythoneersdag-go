@@ -13,12 +13,9 @@ type Cadeau struct {
 func VerdeelWachtrij(wachtrij []Cadeau) (ploegA, ploegB []Cadeau) {
 	helft := len(wachtrij) / 2
 
-	// BUG: ploegA en ploegB lijken twee aparte slices, maar delen mogelijk
-	// dezelfde onderliggende array als wachtrij.
-	//
-	// Daardoor kan een wijziging aan de ene slice ook gevolgen hebben voor
-	// de andere slice. Let vooral op wat er gebeurt wanneer later een
-	// element wordt toegevoegd aan ploegA. Los de bug in deze functie op.
+	// BUG: bij het maken van ploegA en ploegB gaat er iets niet goed.
+	// Het lijkt er wel op dat latere wijzigingen in ploegA ook terecht komen in
+	// ploegB!
 	return wachtrij[:helft], wachtrij[helft:]
 }
 
