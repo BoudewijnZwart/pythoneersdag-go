@@ -46,14 +46,12 @@ style: |
 
 ---
 
-## Waarom bestaat Go?
+## Waarom Go?
 
 - 2007, Google: C++ compileerde te traag, Java was te log, en Python
   schaalde niet goed genoeg voor hun grootste systemen (denk: de GIL)
-- Gemaakt door Robert Griesemer, Rob Pike en Ken Thompson - ja, dezelfde
-  Ken Thompson die mee aan de wieg van Unix stond
-- 2009 open source, 2012 versie 1.0 met een backwards-compatibility-
-  belofte die nu nog steeds geldt
+- Gemaakt door Robert Griesemer, Rob Pike en Ken Thompson.
+    2009 open source, 2012 versie 1.0
 
 ---
 
@@ -91,6 +89,7 @@ bereken("3", 4)  # TypeError, maar pas tijdens runtime
 func bereken(a, b int) int {
     return a + b
 }
+bereken("3", 4) 
 ```
 
 ---
